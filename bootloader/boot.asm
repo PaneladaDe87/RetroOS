@@ -9,8 +9,19 @@ START:
     LD DE, 0x0000
     LD BC, 0x4000
 
-    ; Looping
+    ; Commands for boot(just a idiot test)
+    LD A, 0x1024
+    ADD A, B
 
-    JR $
+    ; Infinite loop
+    CP A
+    JR Z, SETUP
+    JR TEST
 
     END START
+
+SETUP:
+    DB "Your machine is booting, please, wait"
+
+TEST:
+    DB "Here a test screen"
