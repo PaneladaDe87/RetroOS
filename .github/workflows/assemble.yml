@@ -1,0 +1,29 @@
+name: assemble code
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: check repository
+      uses: actions/checkout@v3
+      
+    - name: install assembler
+      run: |
+        sudo apt-get install z80asm
+        echo "z80asm installed"
+            
+    - name: assemble source code
+      run: |
+        z80asm bootloader/boot.asm kernel/main.asm -o output.bin
+        echo "code assembled"
+                
+    - name: upload OS artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: output
+        path: ./output.bin
