@@ -1,19 +1,33 @@
 ORG 0x0000
 
-START:
-    LD SP, 0xFF00
-    LD A, (0)
-    
-    JP SETUP
+LD A, 0
 
-SETUP:
-    DB "Your machine is booting, please, wait"
-    
-    ADD A, (1)
-    
-    CP A
-    JR NZ, INIT
+JP SETUP_SCREEN_STEP
 
-INIT:
-    DB "Your machine has been booted sucessfuly"
-    DB "Going to main screen, please wait..."
+SETUP_SCREEN_STEP:
+    LD HL, 0x8000
+    INC A
+    JP SETUP_SPEAKER_STEP
+    
+SETUP_SPEAKER_STEP:
+    LD DE, 0x5000
+    INC A
+    JP SETUP_EPROM_STEP
+    
+SETUP_EPROM_STEP:
+    ; setup the EPROM
+    LD BC, 0x2000
+    INC A
+    JP CHECK_FILES_STEP
+
+CHECK_FILES_STEP:
+    ; check files from the 0x1000 EPROM adress
+    
+    CP 0x2000
+    JR Z, LOAD_FILES_STEP
+    
+    INC A
+    JR NZ, FINISH_TASK
+
+FINISH_TASK:
+    JP 0x0001
