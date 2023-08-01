@@ -24,7 +24,7 @@ CHECK_FILES_STEP:
     ; check files from the 0x1000 EPROM adress
     
     CP 0x2000
-    JR Z, LOAD_FILES_STEP
+    JR Z, CHECK_FILES_STEP
     
     INC A
     JR NZ, FINISH_TASK
